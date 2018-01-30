@@ -1,6 +1,6 @@
 package com.enuvid.proxyaggregator.data;
 
-import com.enuvid.proxyaggregator.utils.IpConverter;
+import com.enuvid.proxyaggregator.utils.IpUtils;
 import org.springframework.data.annotation.Id;
 
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class Proxy {
     }
 
     public String getIp() {
-        return IpConverter.convert(ip);
+        return IpUtils.convert(ip);
     }
 
     public long getPort() {
@@ -77,7 +77,7 @@ public class Proxy {
     }
 
     public Proxy(String ip, long port, ProxyType type, Update update) {
-        this.ip = IpConverter.convert(ip);
+        this.ip = IpUtils.convert(ip);
         this.port = port;
         this.type = type;
 
