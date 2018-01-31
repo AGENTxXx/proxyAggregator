@@ -13,7 +13,6 @@ public class IpUtilsTest {
 
     @Test
     public void ping() {
-        System.out.println(IpUtils.ping("google.com"));
         assert IpUtils.ping("google.com") != -1;
     }
 }
