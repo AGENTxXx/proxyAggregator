@@ -31,21 +31,22 @@ public class IpUtils {
         return result.toString();
     }
 
-    public static int ping(String ip) {
+    public static int ping(String host) {
         try {
             String cmd = "ping";
-            if (System.getProperty("os.name").startsWith("Windows")) // Windows
+            if (System.getProperty("os.name").startsWith("Windows")) // If operating system is Windows
                 cmd += " -n 1";
-            else //Unix
-                cmd += "-c 1";
-            cmd += " " + ip;
+            else //If Unix(Linux, Mac OS)
+                cmd += " -c 1";
+            cmd += " " + host;
 
-            Process pingProcess = Runtime.getRuntime().exec(cmd);
-            BufferedReader br = new BufferedReader(
+            Process pingProcess = Runtime.getRuntime().exec(cmd); // Run cmd
+            BufferedReader input = new BufferedReader( // Get app output stream
                     new InputStreamReader(
                             pingProcess.getInputStream()));
-            for (String cur; (cur = br.readLine()) != null; ) {
-                if (cur.contains(ip + ": ")) { //If line contains ping value
+
+            for (String cur; (cur = input.readLine()) != null; ) { //Read one line
+                if (cur.contains(": ") && !cur.contains("): ")) { //If line contains ping value
                     int mark = System.getProperty("os.name").startsWith("Windows") ? 2 : 3; // If system is windows -> take second equal symbol
                     int startIndex = 0; // Else take third equal symbol as start point in ping number
 
@@ -55,7 +56,7 @@ public class IpUtils {
 
                     int endIndex;
                     endIndex = startIndex + 1;
-                    while (Character.isDigit(cur.charAt(endIndex))) {
+                    while (Character.isDigit(cur.charAt(endIndex))) { //Get last index of value in line
                         endIndex++;
                     }
 
