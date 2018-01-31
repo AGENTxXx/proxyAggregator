@@ -31,21 +31,21 @@ public class IpUtils {
         return result.toString();
     }
 
-    public static int ping(String host) {
+    public static int ping(String ip) {
         try {
             String cmd = "ping";
             if (System.getProperty("os.name").startsWith("Windows")) // Windows
                 cmd += " -n 1";
             else //Unix
                 cmd += "-c 1";
-            cmd += " " + host;
+            cmd += " " + ip;
 
             Process pingProcess = Runtime.getRuntime().exec(cmd);
             BufferedReader br = new BufferedReader(
                     new InputStreamReader(
                             pingProcess.getInputStream()));
             for (String cur; (cur = br.readLine()) != null; ) {
-                if (cur.contains(": ")) { //If line contains ping value
+                if (cur.contains(ip + ": ")) { //If line contains ping value
                     int mark = System.getProperty("os.name").startsWith("Windows") ? 2 : 3; // If system is windows -> take second equal symbol
                     int startIndex = 0; // Else take third equal symbol as start point in ping number
 
