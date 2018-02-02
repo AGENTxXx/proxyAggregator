@@ -13,7 +13,7 @@ public class Proxy {
     private String id;
 
     private long ip;
-    private long port;
+    private int port;
     private ProxyType type;
     private int numUpdates;
     private int numSuccessfulUpdates;
@@ -22,7 +22,7 @@ public class Proxy {
     private int StillUpdate;
     private List<Update> lastUpdates;
 
-    public Proxy(String ip, long port, ProxyType type) {
+    public Proxy(String ip, int port, ProxyType type) {
         this.ip = IpUtils.convert(ip);
         this.port = port;
         this.type = type;
@@ -51,7 +51,7 @@ public class Proxy {
         return IpUtils.convert(ip);
     }
 
-    public long getPort() {
+    public int getPort() {
         return port;
     }
 
