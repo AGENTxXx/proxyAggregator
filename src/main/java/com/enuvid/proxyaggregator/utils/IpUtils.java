@@ -95,15 +95,14 @@ public class IpUtils {
             JsonObject response = jsonParser.parse(new InputStreamReader(
                     (InputStream) request.getContent()
             )).getAsJsonObject();
+            if (!response.remove("status").getAsString().equals("success"))
+                throw new Exception("Not \"success\" status of response");
+            response.remove("query");
 
             Map<String, String> location = new HashMap<>();
-            location.put("city", response.get("city").getAsString());
-            location.put("region", response.get("region").getAsString());
-            location.put("country", response.get("country").getAsString());
-            location.put("countryCode", response.get("countryCode").getAsString());
-            location.put("lat", response.get("lat").getAsString());
-            location.put("lon", response.get("lon").getAsString());
-            location.put("zip", response.get("zip").getAsString());
+            response.entrySet().forEach((k) ->
+                    location.put(k.getKey(), k.getValue().getAsString())
+            );
             return location;
         } catch (Exception e) {
             return null;
