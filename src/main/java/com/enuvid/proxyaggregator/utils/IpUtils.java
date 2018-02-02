@@ -1,7 +1,16 @@
 package com.enuvid.proxyaggregator.utils;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 public class IpUtils {
     public static Long convert(String ipAddress) {
@@ -74,5 +83,36 @@ public class IpUtils {
 
     public static int ping(Long ip) {
         return ping(IpUtils.convert(ip));
+    }
+
+    public static Map<String, String> getLocation(String host) {
+        try {
+            final String infoService = "http://ip-api.com/json/";
+            URL url = new URL(infoService + host);
+            HttpURLConnection request = (HttpURLConnection) url.openConnection();
+            request.connect();
+
+            JsonParser jsonParser = new JsonParser();
+            JsonObject response = jsonParser.parse(new InputStreamReader(
+                    (InputStream) request.getContent()
+            )).getAsJsonObject();
+
+            Map<String, String> location = new HashMap<>();
+            location.put("city", response.get("city").getAsString());
+            location.put("region", response.get("region").getAsString());
+            location.put("country", response.get("country").getAsString());
+            location.put("countryCode", response.get("countryCode").getAsString());
+            location.put("lat", response.get("lat").getAsString());
+            location.put("lon", response.get("lon").getAsString());
+            location.put("zip", response.get("zip").getAsString());
+            return location;
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static Map<String, String> getLocation(Long ip) {
+        return getLocation(IpUtils.convert(ip));
     }
 }

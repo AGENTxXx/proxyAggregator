@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Id;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class Proxy {
     @Id
@@ -16,9 +17,14 @@ public class Proxy {
     private ProxyType type;
     private int numUpdates;
     private int numSuccessfulUpdates;
-    private String location;
+    private String city;
+    private String countryCode;
     private int StillUpdate;
     private List<Update> lastUpdates;
+
+    public String getCountryCode() {
+        return countryCode;
+    }
 
     public void setNumUpdates(int numUpdates) {
         this.numUpdates = numUpdates;
@@ -64,8 +70,8 @@ public class Proxy {
         return numSuccessfulUpdates;
     }
 
-    public String getLocation() {
-        return location;
+    public String getCity() {
+        return city;
     }
 
     public int getStillUpdate() {
@@ -76,17 +82,20 @@ public class Proxy {
         return lastUpdates;
     }
 
-    public Proxy(String ip, long port, ProxyType type, Update update) {
+    public Proxy(String ip, long port, ProxyType type) {
         this.ip = IpUtils.convert(ip);
         this.port = port;
         this.type = type;
-
-        this.lastUpdates = new ArrayList<>();
-        this.lastUpdates.add(update);
-
         this.numSuccessfulUpdates = 1;
         this.numUpdates = 1;
-//        TODO: Check location(expml: http://ip-api.com/json/208.80.152.100)
-        this.location = "default";
+
+        this.lastUpdates = new ArrayList<>();
+        this.lastUpdates.add(new Update(ip));
+
+        Map location = IpUtils.getLocation(ip);
+        if (location != null) {
+            this.city = location.get("city").toString();
+            this.countryCode = location.get("countryCode").toString();
+        }
     }
 }

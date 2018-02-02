@@ -24,7 +24,7 @@ public class TestSchedule {
 
     @Scheduled(fixedRate = 60000 * 60)
     void addRecordToTestCollection() {
-        Proxy testProxy = new Proxy("127.0.0.1", 2000, ProxyType.SOCKS5, new Update(120));
+        Proxy testProxy = new Proxy("127.0.0.1", 2000, ProxyType.SOCKS5);
         proxyRepo.insert(testProxy);
         logger.log(Level.INFO, "Add new proxy at " + new Date());
     }

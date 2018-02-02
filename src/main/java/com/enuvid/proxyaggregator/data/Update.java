@@ -1,5 +1,7 @@
 package com.enuvid.proxyaggregator.data;
 
+import com.enuvid.proxyaggregator.utils.IpUtils;
+
 import java.util.Date;
 
 public class Update {
@@ -14,13 +16,13 @@ public class Update {
         return ping;
     }
 
-    public Update(Date date, int ping) {
-        this.date = date;
-        this.ping = ping;
+    Update(String host) {
+        this.date = new Date();
+        this.ping = IpUtils.ping(host);
     }
 
-    public Update(int ping) {
-        this.ping = ping;
+    Update(Long ip) {
+        this.ping = IpUtils.ping(ip);
         this.date = new Date();
     }
 }
