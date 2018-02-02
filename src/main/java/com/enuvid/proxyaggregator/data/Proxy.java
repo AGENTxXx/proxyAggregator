@@ -22,24 +22,25 @@ public class Proxy {
     private int StillUpdate;
     private List<Update> lastUpdates;
 
+    public Proxy(String ip, long port, ProxyType type) {
+        this.ip = IpUtils.convert(ip);
+        this.port = port;
+        this.type = type;
+        this.numSuccessfulUpdates = 1;
+        this.numUpdates = 1;
+
+        this.lastUpdates = new ArrayList<>();
+        this.lastUpdates.add(new Update(ip));
+
+        Map location = IpUtils.getLocation(ip);
+        if (location != null) {
+            this.city = location.get("city").toString();
+            this.countryCode = location.get("countryCode").toString();
+        }
+    }
+
     public String getCountryCode() {
         return countryCode;
-    }
-
-    public void setNumUpdates(int numUpdates) {
-        this.numUpdates = numUpdates;
-    }
-
-    public void setNumSuccessfulUpdates(int numSuccessfulUpdates) {
-        this.numSuccessfulUpdates = numSuccessfulUpdates;
-    }
-
-    public void setStillUpdate(int stillUpdate) {
-        StillUpdate = stillUpdate;
-    }
-
-    public void setLastUpdates(List<Update> lastUpdates) {
-        this.lastUpdates = lastUpdates;
     }
 
     public String getId() {
@@ -66,8 +67,16 @@ public class Proxy {
         return numUpdates;
     }
 
+    public void setNumUpdates(int numUpdates) {
+        this.numUpdates = numUpdates;
+    }
+
     public int getNumSuccessfulUpdates() {
         return numSuccessfulUpdates;
+    }
+
+    public void setNumSuccessfulUpdates(int numSuccessfulUpdates) {
+        this.numSuccessfulUpdates = numSuccessfulUpdates;
     }
 
     public String getCity() {
@@ -78,24 +87,15 @@ public class Proxy {
         return StillUpdate;
     }
 
+    public void setStillUpdate(int stillUpdate) {
+        StillUpdate = stillUpdate;
+    }
+
     public List<Update> getLastUpdates() {
         return lastUpdates;
     }
 
-    public Proxy(String ip, long port, ProxyType type) {
-        this.ip = IpUtils.convert(ip);
-        this.port = port;
-        this.type = type;
-        this.numSuccessfulUpdates = 1;
-        this.numUpdates = 1;
-
-        this.lastUpdates = new ArrayList<>();
-        this.lastUpdates.add(new Update(ip));
-
-        Map location = IpUtils.getLocation(ip);
-        if (location != null) {
-            this.city = location.get("city").toString();
-            this.countryCode = location.get("countryCode").toString();
-        }
+    public void setLastUpdates(List<Update> lastUpdates) {
+        this.lastUpdates = lastUpdates;
     }
 }

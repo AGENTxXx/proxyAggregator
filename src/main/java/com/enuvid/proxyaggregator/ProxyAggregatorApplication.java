@@ -7,8 +7,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling
 public class ProxyAggregatorApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(ProxyAggregatorApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ProxyAggregatorApplication.class, args);
+    }
 }

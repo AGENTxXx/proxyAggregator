@@ -8,14 +8,6 @@ public class Update {
     private Date date;
     private int ping;
 
-    public Date getDate() {
-        return date;
-    }
-
-    public int getPing() {
-        return ping;
-    }
-
     Update(String host) {
         this.date = new Date();
         this.ping = IpUtils.ping(host);
@@ -24,5 +16,13 @@ public class Update {
     Update(Long ip) {
         this.ping = IpUtils.ping(ip);
         this.date = new Date();
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public int getPing() {
+        return ping;
     }
 }

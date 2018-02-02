@@ -2,7 +2,6 @@ package com.enuvid.proxyaggregator.utils;
 
 import org.junit.Test;
 
-import java.sql.Struct;
 import java.util.Map;
 
 public class IpUtilsTests {
@@ -25,7 +24,7 @@ public class IpUtilsTests {
         assert location != null;
 
         location.forEach((k, v) ->
-            System.out.println(k + ":   " + v)
+                System.out.println(k + ":   " + v)
         );
     }
 }

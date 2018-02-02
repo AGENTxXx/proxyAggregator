@@ -1,6 +1,5 @@
 package com.enuvid.proxyaggregator.utils;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -106,8 +105,7 @@ public class IpUtils {
             location.put("lon", response.get("lon").getAsString());
             location.put("zip", response.get("zip").getAsString());
             return location;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }
