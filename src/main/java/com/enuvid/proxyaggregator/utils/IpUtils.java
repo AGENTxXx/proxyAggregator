@@ -39,14 +39,14 @@ public class IpUtils {
         return result.toString();
     }
 
-    public static int ping(String host) {
+    public static int ping(String ip) {
         try {
             String cmd = "ping";
             if (System.getProperty("os.name").startsWith("Windows")) // If operating system is Windows
                 cmd += " -n 1";
             else //If Unix(Linux, Mac OS)
                 cmd += " -c 1";
-            cmd += " " + host;
+            cmd += " " + ip;
 
             Process pingProcess = Runtime.getRuntime().exec(cmd); // Run cmd
             BufferedReader input = new BufferedReader( // Get app output stream
@@ -71,10 +71,8 @@ public class IpUtils {
                     return Integer.parseInt(cur.substring(startIndex + 1, endIndex)); // Get substring and convert to int
                 }
             }
-
-            return -1;
+            throw new Exception("Line with ping time was not found.");
         } catch (Exception e) {
-
             e.printStackTrace();
             return -1;
         }

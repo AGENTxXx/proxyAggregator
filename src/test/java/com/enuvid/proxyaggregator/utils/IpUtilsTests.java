@@ -15,7 +15,7 @@ public class IpUtilsTests {
 
     @Test
     public void ping() {
-        assert IpUtils.ping("google.com") != -1;
+        assert IpUtils.ping("77.88.55.88") != -1;
     }
 
     @Test
