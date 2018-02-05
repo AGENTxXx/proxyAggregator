@@ -1,6 +1,6 @@
 package com.enuvid.proxyaggregator.data;
 
-import com.enuvid.proxyaggregator.utils.IpUtils;
+import com.enuvid.proxyaggregator.utils.IP;
 import org.springframework.data.annotation.Id;
 
 public class BlockedProxy {
@@ -11,12 +11,12 @@ public class BlockedProxy {
     private int port;
 
     BlockedProxy(Proxy proxy) {
-        this.ip = IpUtils.convert(proxy.getIp());
+        this.ip = IP.convert(proxy.getIp());
         this.port = proxy.getPort();
     }
 
     public String getIp() {
-        return IpUtils.convert(ip);
+        return IP.convert(ip);
     }
 
     public int getPort() {
