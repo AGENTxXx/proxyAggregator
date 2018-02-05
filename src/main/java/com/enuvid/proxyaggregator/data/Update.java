@@ -6,15 +6,15 @@ import java.util.Date;
 
 public class Update {
     private Date date;
-    private int ping;
+    private int speed;
 
     Update(String host) {
         this.date = new Date();
-        this.ping = IpUtils.ping(host);
+        this.speed = IpUtils.ping(host);
     }
 
     Update(Long ip) {
-        this.ping = IpUtils.ping(ip);
+        this.speed = IpUtils.ping(ip);
         this.date = new Date();
     }
 
@@ -22,7 +22,7 @@ public class Update {
         return date;
     }
 
-    public int getPing() {
-        return ping;
+    public int getSpeed() {
+        return speed;
     }
 }

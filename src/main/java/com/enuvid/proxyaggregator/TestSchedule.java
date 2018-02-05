@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,7 +24,11 @@ public class TestSchedule {
 
     @Scheduled(fixedRate = 60000 * 60)
     void addRecordToTestCollection() {
-        Proxy testProxy = new Proxy("185.136.177.192", 2000, ProxyType.SOCKS5);
+        Proxy testProxy = new Proxy("185.136.177.192", 2000,
+                new ArrayList<ProxyType>() {{
+                    add(ProxyType.HTTP);
+                }}
+        );
         proxyRepo.insert(testProxy);
         logger.log(Level.INFO, "Add new proxy at " + new Date());
     }

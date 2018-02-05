@@ -26,5 +26,6 @@ public class IpUtilsTests {
         location.forEach((k, v) ->
                 System.out.println(k + ":   " + v)
         );
+
     }
 }
