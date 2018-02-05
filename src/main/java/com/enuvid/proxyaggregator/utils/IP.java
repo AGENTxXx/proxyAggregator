@@ -3,7 +3,6 @@ package com.enuvid.proxyaggregator.utils;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -11,7 +10,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-public class IpUtils {
+public class IP {
     public static Long convert(String ipAddress) {
         String[] ipAddressInArray = ipAddress.split("\\.");
 
@@ -37,49 +36,6 @@ public class IpUtils {
             ip = ip >> 8;
         }
         return result.toString();
-    }
-
-    public static int ping(String ip) {
-        try {
-            String cmd = "ping";
-            if (System.getProperty("os.name").startsWith("Windows")) // If operating system is Windows
-                cmd += " -n 1";
-            else //If Unix(Linux, Mac OS)
-                cmd += " -c 1";
-            cmd += " " + ip;
-
-            Process pingProcess = Runtime.getRuntime().exec(cmd); // Run cmd
-            BufferedReader input = new BufferedReader( // Get app output stream
-                    new InputStreamReader(
-                            pingProcess.getInputStream()));
-
-            for (String cur; (cur = input.readLine()) != null; ) { //Read one line
-                if (cur.contains(": ") && !cur.contains("): ")) { //If line contains ping value
-                    int mark = System.getProperty("os.name").startsWith("Windows") ? 2 : 3; // If system is windows -> take second equal symbol
-                    int startIndex = 0; // Else take third equal symbol as start point in ping number
-
-                    for (int i = 0; i < mark; i++) { //Get start index of value in line
-                        startIndex = cur.indexOf("=", startIndex + 1);
-                    }
-
-                    int endIndex;
-                    endIndex = startIndex + 1;
-                    while (Character.isDigit(cur.charAt(endIndex))) { //Get last index of value in line
-                        endIndex++;
-                    }
-
-                    return Integer.parseInt(cur.substring(startIndex + 1, endIndex)); // Get substring and convert to int
-                }
-            }
-            throw new Exception("Line with ping time was not found.");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return -1;
-        }
-    }
-
-    public static int ping(Long ip) {
-        return ping(IpUtils.convert(ip));
     }
 
     public static Map<String, String> getLocation(String host) {
@@ -108,6 +64,6 @@ public class IpUtils {
     }
 
     public static Map<String, String> getLocation(Long ip) {
-        return getLocation(IpUtils.convert(ip));
+        return getLocation(IP.convert(ip));
     }
 }
