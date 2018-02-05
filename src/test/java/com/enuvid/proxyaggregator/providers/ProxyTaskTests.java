@@ -5,15 +5,15 @@ import org.junit.Test;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ProxyAdderTests {
+public class ProxyTaskTests {
     @Test
     public void run() {
         ExecutorService executor = Executors.newFixedThreadPool(3);
-        ProxyAdder task = new ProxyAdder().setContext("173.194.222.102", 80);
+        ProxyTask task = new ProxyTask().setContext("173.194.222.102", 80);
 
         executor.submit(task);
         executor.submit(task);
 
-        while(executor.isShutdown());
+        while (executor.isShutdown()) ;
     }
 }

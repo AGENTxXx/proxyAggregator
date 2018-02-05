@@ -1,32 +1,40 @@
 package com.enuvid.proxyaggregator.providers;
 
-import com.enuvid.proxyaggregator.data.BlockedProxyRepository;
 import com.enuvid.proxyaggregator.data.Proxy;
-import com.enuvid.proxyaggregator.data.ProxyRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 @Component
 public abstract class ProxyProvider {
-    private final ProxyRepository proxyRepos;
-    private final BlockedProxyRepository blockedRepos;
-    private List<Proxy> result = new ArrayList<>();
-    Runnable adder = () -> {
+    private ExecutorService pool = Executors.newFixedThreadPool(18);
+    private List<Future<Proxy>> newProxies = new ArrayList<>();
 
-    };
+    abstract void parse();
 
-    @Autowired
-    public ProxyProvider(ProxyRepository proxyRepol, BlockedProxyRepository blockedRepos) {
-        this.proxyRepos = proxyRepol;
-        this.blockedRepos = blockedRepos;
+    public List<Proxy> find() {
+        parse();
+        return getFoundProxies();
     }
 
-
-    public abstract List<Proxy> find();
     public void addProxy(String ip, int host) {
+        ProxyTask task = new ProxyTask().setContext(ip, host);
 
+        newProxies.add(pool.submit(task));
+    }
+
+    private List<Proxy> getFoundProxies() {
+        List<Proxy> proxies = new ArrayList<>();
+        for (Future<Proxy> f : newProxies) {
+            try {
+                proxies.add(f.get());
+            } catch (Exception ignored) {
+            }
+        }
+        return proxies;
     }
 }
