@@ -21,7 +21,7 @@ public class TestSchedule {
     }
 
     @Scheduled(fixedRate = 60000 * 60)
-    void addRecordToTestCollection() {
+    void addRecordToTestCollection() throws Exception {
         Proxy testProxy = new Proxy("185.136.177.192", 2000);
         proxyRepo.insert(testProxy);
         logger.log(Level.INFO, "Add new proxy at " + new Date());

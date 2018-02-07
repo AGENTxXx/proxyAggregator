@@ -10,7 +10,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-public class IP {
+public class IPUtils {
     public static Long convert(String ipAddress) {
         String[] ipAddressInArray = ipAddress.split("\\.");
 
@@ -64,6 +64,6 @@ public class IP {
     }
 
     public static Map<String, String> getLocation(Long ip) {
-        return getLocation(IP.convert(ip));
+        return getLocation(IPUtils.convert(ip));
     }
 }

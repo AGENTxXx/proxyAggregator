@@ -4,18 +4,18 @@ import org.junit.Test;
 
 import java.util.Map;
 
-public class IPTests {
+public class IPUtilsTests {
     @Test
     public void convert() {
         String entryIp = "255.255.255.255";
-        Long ip = IP.convert(entryIp);
-        String outerIp = IP.convert(ip);
+        Long ip = IPUtils.convert(entryIp);
+        String outerIp = IPUtils.convert(ip);
         assert entryIp.equals(outerIp);
     }
 
     @Test
     public void getLocation() {
-        Map<String, String> location = IP.getLocation("46.170.3.12");
+        Map<String, String> location = IPUtils.getLocation("46.170.3.12");
         assert location != null;
 
         location.forEach((k, v) ->

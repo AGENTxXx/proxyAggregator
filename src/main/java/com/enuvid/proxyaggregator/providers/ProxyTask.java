@@ -26,6 +26,10 @@ public class ProxyTask implements Callable<Proxy> {
     }
 
     public Proxy call() {
-        return new Proxy(ip, port);
+        try {
+            return new Proxy(ip, port);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

@@ -6,8 +6,11 @@ import org.junit.Test;
 public class ProxyTests {
     @Test
     public void create() {
-        Proxy someProxy = new Proxy("185.136.177.192", 10);
+        try {
+            Proxy someProxy = new Proxy("37.191.205.105", 10200);
 
-        System.out.println(new Gson().toJson(someProxy));
+            System.out.println(new Gson().toJson(someProxy));
+        } catch (Exception ignored) {
+        }
     }
 }

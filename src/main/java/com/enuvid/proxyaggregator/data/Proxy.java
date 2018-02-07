@@ -1,6 +1,7 @@
 package com.enuvid.proxyaggregator.data;
 
-import com.enuvid.proxyaggregator.utils.IP;
+import com.enuvid.proxyaggregator.utils.IPUtils;
+import com.enuvid.proxyaggregator.utils.ProxyUtils;
 import org.springframework.data.annotation.Id;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class Proxy {
 
     private long ip;
     private int port;
-    private List<java.net.Proxy.Type> type;
+    private java.net.Proxy.Type type;
     private int numUpdates;
     private int numSuccessfulUpdates;
     private String city;
@@ -22,18 +23,17 @@ public class Proxy {
     private int StillUpdate;
     private List<Update> lastUpdates;
 
-    //TODO: Add type checker
-    public Proxy(String ip, int port) {
-        this.ip = IP.convert(ip);
+    public Proxy(String ip, int port) throws Exception {
+        this.ip = IPUtils.convert(ip);
         this.port = port;
-//        this.type = type;
+        this.type = ProxyUtils.getType(ip, port);
         this.numSuccessfulUpdates = 1;
         this.numUpdates = 1;
 
         this.lastUpdates = new ArrayList<>();
 //        this.lastUpdates.add(new Update(ip, type.get(0)));
 
-        Map location = IP.getLocation(ip);
+        Map location = IPUtils.getLocation(ip);
         if (location != null) {
             this.city = location.get("city").toString();
             this.countryCode = location.get("countryCode").toString();
@@ -49,14 +49,14 @@ public class Proxy {
     }
 
     public String getIp() {
-        return IP.convert(ip);
+        return IPUtils.convert(ip);
     }
 
     public int getPort() {
         return port;
     }
 
-    public List<java.net.Proxy.Type> getType() {
+    public java.net.Proxy.Type getType() {
         return type;
     }
 
