@@ -21,6 +21,10 @@ public class IPUtilsTests {
         location.forEach((k, v) ->
                 System.out.println(k + ":   " + v)
         );
+    }
 
+    @Test
+    public void ip2long() {
+        System.out.println(IPUtils.convert("95.110.186.48"));
     }
 }

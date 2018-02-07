@@ -1,9 +1,13 @@
 package com.enuvid.proxyaggregator.utils;
 
+import com.enuvid.proxyaggregator.data.Proxy;
+
 import java.net.InetSocketAddress;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class ProxyUtils {
     public static java.net.Proxy.Type getType(String ip, int port) throws Exception {
@@ -31,5 +35,19 @@ public class ProxyUtils {
         } catch (Exception e) {
             return -1;
         }
+    }
+
+    public static List<Proxy> removeDuplicates(List<Proxy> proxyList) {
+        List<Proxy> tmp = new ArrayList<>(proxyList);
+        int len = proxyList.size();
+        for (Proxy proxy : tmp)
+            proxyList.removeIf(it ->
+                    proxy.getIp().equals(it.getIp()) &&
+                            proxy.getPort() == it.getPort() &&
+                            !proxy.getLastUpdates().equals(it.getLastUpdates())
+            );
+
+        System.out.println("Deleted duplicates: " + (len - proxyList.size()));
+        return proxyList;
     }
 }

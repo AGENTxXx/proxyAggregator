@@ -7,7 +7,6 @@ import org.springframework.data.annotation.Id;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 public class Proxy {
     @Id
@@ -18,9 +17,7 @@ public class Proxy {
     private java.net.Proxy.Type type;
     private int numUpdates;
     private int numSuccessfulUpdates;
-    private String city;
-    private String countryCode;
-    private int StillUpdate;
+    private ShortLocation location;
     private List<Update> lastUpdates;
 
     public Proxy(String ip, int port) throws Exception {
@@ -31,17 +28,13 @@ public class Proxy {
         this.numUpdates = 1;
 
         this.lastUpdates = new ArrayList<>();
-//        this.lastUpdates.add(new Update(ip, type.get(0)));
+        this.lastUpdates.add(new Update(ip, port, type));
 
-        Map location = IPUtils.getLocation(ip);
-        if (location != null) {
-            this.city = location.get("city").toString();
-            this.countryCode = location.get("countryCode").toString();
-        }
+        this.location = new ShortLocation(IPUtils.getLocation(ip));
     }
 
-    public String getCountryCode() {
-        return countryCode;
+    public ShortLocation getLocation() {
+        return location;
     }
 
     public String getId() {
@@ -78,18 +71,6 @@ public class Proxy {
 
     public void setNumSuccessfulUpdates(int numSuccessfulUpdates) {
         this.numSuccessfulUpdates = numSuccessfulUpdates;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public int getStillUpdate() {
-        return StillUpdate;
-    }
-
-    public void setStillUpdate(int stillUpdate) {
-        StillUpdate = stillUpdate;
     }
 
     public List<Update> getLastUpdates() {

@@ -11,6 +11,7 @@ public class ProxyTests {
 
             System.out.println(new Gson().toJson(someProxy));
         } catch (Exception ignored) {
+            ignored.printStackTrace();
         }
     }
 }

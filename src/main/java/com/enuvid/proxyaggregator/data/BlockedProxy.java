@@ -9,6 +9,7 @@ public class BlockedProxy {
 
     private Long ip;
     private int port;
+    private int successfulUpdates = 0;
 
     BlockedProxy(Proxy proxy) {
         this.ip = IPUtils.convert(proxy.getIp());
