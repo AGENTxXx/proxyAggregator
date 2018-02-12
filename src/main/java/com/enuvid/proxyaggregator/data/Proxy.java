@@ -16,9 +16,19 @@ public class Proxy {
     private int port;
     private java.net.Proxy.Type type;
     private int numUpdates;
+    private int avgSpeed;
+    private int avgAvailable;
     private int numSuccessfulUpdates;
     private ShortLocation location;
     private List<Update> lastUpdates;
+
+    public int getAvgAvailable() {
+        return avgAvailable;
+    }
+
+    public int getAvgSpeed() {
+        return avgSpeed;
+    }
 
     protected Proxy() {
     } // JPA constructor
@@ -94,6 +104,15 @@ public class Proxy {
         }
     }
 
+    private void calculateMetrics() {
+        int sum = 0;
+        for (Update update : lastUpdates)
+            sum += update.getSpeed();
+        avgSpeed = sum / lastUpdates.size();
+
+        avgAvailable = Math.round((float) numSuccessfulUpdates / (float) numUpdates * 100);
+    }
+
     public boolean update() {
         Update newUpdate = new Update(ip, port, type);
         pushNewUpdate(newUpdate);
@@ -101,8 +120,8 @@ public class Proxy {
         numUpdates++;
         if (newUpdate.getSpeed() != -1)
             numSuccessfulUpdates++;
-        else return false;
+        calculateMetrics();
 
-        return true;
+        return newUpdate.getSpeed() != -1;
     }
 }
