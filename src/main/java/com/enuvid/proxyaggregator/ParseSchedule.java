@@ -17,12 +17,15 @@ import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Component
 public class ParseSchedule {
     private final Logger logger = Logger.getLogger(ParseSchedule.class.getName());
+    private ExecutorService pool = Executors.newFixedThreadPool(24);
     private final ProxyRepository proxyRepo;
     private final BlockedProxyRepository blockedRepo;
     private final WebDriver driver;
@@ -38,12 +41,10 @@ public class ParseSchedule {
         driver = new PhantomJSDriver(caps);
     }
 
-
-    @Scheduled(fixedRate = 60000 * 60)
+    @Scheduled(fixedDelay = 1)
     void parseNewProxies() {
-
         List<ProxyProvider> providers = Arrays.asList(
-                new HidemyName()
+                new HidemyName().setThreadPool(pool)
         );
 
         for (ProxyProvider provider : providers) {

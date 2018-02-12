@@ -10,27 +10,27 @@ import java.util.List;
 import java.util.logging.Level;
 
 public class HidemyName extends ProxyProvider {
-    String baseURL = "https://hidemy.name/ru/proxy-list/?start=";
-
+    @SuppressWarnings("InfiniteLoopStatement")
     @Override
     void parse(WebDriver driver) {
         int pageCounter = 0;
         try {
             while (true) {
                 List<InetSocketAddress> addresses = parsePage(driver, pageCounter * 64);
-                if (addresses.size() == 0)
-                    throw new Exception("Null result");
-                else
+                if (addresses.size() == 0) {
+                    logger.log(Level.FINE, pageCounter + 1 + " pages successful parsed.");
+                    break;
+                } else
                     addresses.forEach((it) -> addProxy(it.getHostName(), it.getPort()));
 
                 pageCounter++;
             }
-        } catch (Exception e) {
-            logger.log(Level.FINE, pageCounter + 1 + " pages successful parsed.");
+        } catch (Exception ignored) {
         }
     }
 
     private List<InetSocketAddress> parsePage(WebDriver driver, int startPoint) throws Exception {
+        String baseURL = "https://hidemy.name/ru/proxy-list/?start=";
         driver.get(baseURL + startPoint);
         Thread.sleep(8000);
         List<WebElement> rows = driver.findElement(By.tagName("table")).findElement(By.tagName("tbody")).findElements(By.tagName("tr"));

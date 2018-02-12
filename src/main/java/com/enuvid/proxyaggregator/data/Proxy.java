@@ -20,6 +20,9 @@ public class Proxy {
     private ShortLocation location;
     private List<Update> lastUpdates;
 
+    protected Proxy() {
+    } // JPA constructor
+
     public Proxy(String ip, int port) throws Exception {
         this.ip = IPUtils.convert(ip);
         this.port = port;
@@ -79,5 +82,27 @@ public class Proxy {
 
     public void setLastUpdates(List<Update> lastUpdates) {
         this.lastUpdates = lastUpdates;
+    }
+
+    private void pushNewUpdate(Update upd) {
+        if (lastUpdates.size() < 10)
+            lastUpdates.add(upd);
+        else {
+            for (int i = 0; i < 9; i++)
+                lastUpdates.set(i, lastUpdates.get(i + 1));
+            lastUpdates.add(9, upd);
+        }
+    }
+
+    public boolean update() {
+        Update newUpdate = new Update(ip, port, type);
+        pushNewUpdate(newUpdate);
+
+        numUpdates++;
+        if (newUpdate.getSpeed() != -1)
+            numSuccessfulUpdates++;
+        else return false;
+
+        return true;
     }
 }

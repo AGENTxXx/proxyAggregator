@@ -7,7 +7,10 @@ public class ShortLocation {
     private String country;
     private String countryCode;
 
-    public ShortLocation(Map<String, String> location) {
+    protected ShortLocation() {
+    } //JPA constructor
+
+    ShortLocation(Map<String, String> location) {
         if (location != null) {
             this.city = location.get("city");
             this.countryCode = location.get("countryCode");

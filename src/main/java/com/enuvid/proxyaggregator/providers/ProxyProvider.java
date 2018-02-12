@@ -4,7 +4,6 @@ import com.enuvid.proxyaggregator.data.BlockedProxyRepository;
 import com.enuvid.proxyaggregator.data.Proxy;
 import com.enuvid.proxyaggregator.data.ProxyRepository;
 import org.openqa.selenium.WebDriver;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +13,17 @@ import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@Component
 public abstract class ProxyProvider {
-    protected final Logger logger = Logger.getLogger(this.getClass().getName());
-    private ExecutorService pool = Executors.newFixedThreadPool(64);
+    final Logger logger = Logger.getLogger(this.getClass().getName());
+    private ExecutorService pool = Executors.newFixedThreadPool(24);
     private ProxyRepository proxyRepo;
     private BlockedProxyRepository blockedRepo;
     private List<Future<Proxy>> newProxies = new ArrayList<>();
+
+    public ProxyProvider setThreadPool(ExecutorService pool) {
+        this.pool = pool;
+        return this;
+    }
 
     abstract void parse(WebDriver driver);
 

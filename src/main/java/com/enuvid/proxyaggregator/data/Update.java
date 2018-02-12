@@ -10,6 +10,9 @@ public class Update {
     private Date date;
     private int speed;
 
+    protected Update() {
+    } //JPA constructor
+
     Update(String host, int port, Proxy.Type type) {
         this.date = new Date();
         this.speed = ProxyUtils.checkSpeed(host, port, type);

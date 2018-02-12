@@ -11,7 +11,7 @@ public class BlockedProxy {
     private int port;
     private int successfulUpdates = 0;
 
-    BlockedProxy(Proxy proxy) {
+    public BlockedProxy(Proxy proxy) {
         this.ip = IPUtils.convert(proxy.getIp());
         this.port = proxy.getPort();
     }

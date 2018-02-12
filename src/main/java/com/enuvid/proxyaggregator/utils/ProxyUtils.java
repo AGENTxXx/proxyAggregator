@@ -39,15 +39,12 @@ public class ProxyUtils {
 
     public static List<Proxy> removeDuplicates(List<Proxy> proxyList) {
         List<Proxy> tmp = new ArrayList<>(proxyList);
-        int len = proxyList.size();
         for (Proxy proxy : tmp)
             proxyList.removeIf(it ->
                     proxy.getIp().equals(it.getIp()) &&
                             proxy.getPort() == it.getPort() &&
                             !proxy.getLastUpdates().equals(it.getLastUpdates())
             );
-
-        System.out.println("Deleted duplicates: " + (len - proxyList.size()));
         return proxyList;
     }
 }
