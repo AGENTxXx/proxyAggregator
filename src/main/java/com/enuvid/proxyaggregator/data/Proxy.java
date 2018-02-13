@@ -33,10 +33,10 @@ public class Proxy {
     protected Proxy() {
     } // JPA constructor
 
-    public Proxy(String ip, int port) throws Exception {
+    public Proxy(String ip, int port, java.net.Proxy.Type type) {
         this.ip = IPUtils.convert(ip);
         this.port = port;
-        this.type = ProxyUtils.getType(ip, port);
+        this.type = type;
         this.numSuccessfulUpdates = 1;
         this.numUpdates = 1;
 
@@ -44,6 +44,10 @@ public class Proxy {
         this.lastUpdates.add(new Update(ip, port, type));
 
         this.location = new ShortLocation(IPUtils.getLocation(ip));
+    }
+
+    public Proxy(String ip, int port) throws Exception {
+        this(ip, port, ProxyUtils.getType(ip, port));
     }
 
     public ShortLocation getLocation() {
