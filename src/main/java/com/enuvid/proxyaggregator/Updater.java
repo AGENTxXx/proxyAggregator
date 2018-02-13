@@ -1,5 +1,6 @@
 package com.enuvid.proxyaggregator;
 
+import com.enuvid.proxyaggregator.data.BlockedProxy;
 import com.enuvid.proxyaggregator.data.BlockedProxyRepository;
 import com.enuvid.proxyaggregator.data.Proxy;
 import com.enuvid.proxyaggregator.data.ProxyRepository;
@@ -22,7 +23,7 @@ public class Updater {
     private final Logger logger = Logger.getLogger(this.getClass().getName());
     private final ProxyRepository proxyRepo;
     private final BlockedProxyRepository blockedRepo;
-    private ExecutorService pool = Executors.newFixedThreadPool(40);
+    private ExecutorService pool = Executors.newFixedThreadPool(24);
 
     @Autowired
     public Updater(ProxyRepository proxyRepo, BlockedProxyRepository blockedRepo) {
@@ -45,15 +46,34 @@ public class Updater {
             try { //Wait until all tasks was be completed
                 for (Future<?> thread : threads)
                     thread.get();
-            } catch (Exception ignored) {
-            }
+            } catch (Exception ignored) { }
 
-            if (partOfProxies.isLast()) {
-                logger.log(Level.INFO, "End of proxy list!");
-                logger.log(Level.INFO, "Records: " + partOfProxies.getTotalElements() + " Pages: " + (i + 1));
-
+            if (partOfProxies.isLast())
                 break;
-            }
+        }
+    }
+
+    private void updateBlockedProxies() {
+        for (int i = 0; true; i++) {
+            logger.log(Level.INFO, "Check blocked proxies");
+
+            Page<BlockedProxy> partOfBlockedProxies = blockedRepo.findAll(new PageRequest(i, 1000));
+
+            //Check all proxy from page async
+
+            List<Future<?>> threads = new ArrayList<>(); //Add all blocked proxies to thread pool
+            for (BlockedProxy blockedProxy : partOfBlockedProxies)
+                threads.add(pool.submit(
+                        new BlockedStatusUpdater(blockedProxy, blockedRepo, proxyRepo)
+                ));
+
+            try { //Wait until all task was be completed
+                for (Future<?> thread : threads)
+                    thread.get();
+            } catch (Exception ignored) { }
+
+            if(partOfBlockedProxies.isLast())
+                break;
         }
     }
 }

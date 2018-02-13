@@ -98,6 +98,7 @@ public class Proxy {
         if (lastUpdates.size() < 10)
             lastUpdates.add(upd);
         else {
+            lastUpdates.remove(0);
             for (int i = 0; i < 9; i++)
                 lastUpdates.set(i, lastUpdates.get(i + 1));
             lastUpdates.add(9, upd);
