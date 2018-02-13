@@ -51,7 +51,6 @@ public class BlockedProxy {
             }
             else
                 successfulUpdates = 0;
-
         } catch (Exception e) {
             successfulUpdates = 0;
         }
