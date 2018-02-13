@@ -110,12 +110,14 @@ public class Proxy {
     }
 
     private void calculateMetrics() {
-        int sum = 0;
-        for (Update update : lastUpdates)
-            sum += update.getSpeed();
-        avgSpeed = sum / lastUpdates.size();
+        if (lastUpdates.size() > 0) {
+            int sum = 0;
+            for (Update update : lastUpdates)
+                sum += update.getSpeed();
+            avgSpeed = sum / lastUpdates.size();
 
-        avgAvailable = Math.round((float) numSuccessfulUpdates / (float) numUpdates * 100);
+            avgAvailable = Math.round((float) numSuccessfulUpdates / (float) numUpdates * 100);
+        }
     }
 
     public boolean update() {
