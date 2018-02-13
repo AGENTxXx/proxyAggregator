@@ -31,6 +31,7 @@ public class ProxyStatusUpdater implements Runnable {
                         new BlockedProxy(proxy)
                 );
 
+//                proxyRepo.save(proxy);
                 proxyRepo.delete(proxy);
                 return;
             }

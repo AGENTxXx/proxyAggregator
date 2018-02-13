@@ -31,7 +31,10 @@ public class BlockedStatusUpdater implements Runnable {
                     if (proxy != null) {
                         logger.log(Level.INFO, "Restore proxy " + proxy.getIp() + ":" + proxy.getPort());
                         proxyRepo.insert(proxy);
+
+//                        blockedRepo.save(blockedProxy);
                         blockedRepo.delete(blockedProxy);
+                        return;
                     }
                 }
             else
