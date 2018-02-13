@@ -23,6 +23,7 @@ public class BlockedStatusUpdater implements Runnable {
 
     @Override
     public void run() {
+        logger.log(Level.INFO, "Check blocked proxy " + blockedProxy.getIp() + ":" + blockedProxy.getIp());
         try {
             if (blockedProxy.check())
                 if (blockedProxy.toRestore()) {

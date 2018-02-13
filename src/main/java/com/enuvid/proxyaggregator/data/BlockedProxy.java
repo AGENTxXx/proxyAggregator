@@ -14,6 +14,9 @@ public class BlockedProxy {
     private int updates = 0;
     private java.net.Proxy.Type type;
 
+    protected BlockedProxy() {
+    } //JPA constructor
+
     public BlockedProxy(Proxy proxy) {
         this.ip = IPUtils.convert(proxy.getIp());
         this.port = proxy.getPort();
