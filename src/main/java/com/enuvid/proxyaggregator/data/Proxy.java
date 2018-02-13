@@ -103,9 +103,7 @@ public class Proxy {
             lastUpdates.add(upd);
         else {
             lastUpdates.remove(0);
-            for (int i = 0; i < 9; i++)
-                lastUpdates.set(i, lastUpdates.get(i + 1));
-            lastUpdates.add(9, upd);
+            lastUpdates.add(upd);
         }
     }
 
@@ -135,5 +133,18 @@ public class Proxy {
         calculateMetrics();
 
         return newUpdate.getSpeed() != -1;
+    }
+
+    public boolean toBlockedList() {
+        if (lastUpdates.size() == 10) {
+            int maxIndexInList = lastUpdates.size() - 1;
+            int badStatusLimit = 5;
+
+            for (Update upd : lastUpdates.subList(maxIndexInList - badStatusLimit, maxIndexInList))
+                if (upd.getSpeed() != -1)
+                    return false;
+
+            return true;
+        } else return false;
     }
 }
