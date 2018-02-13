@@ -23,7 +23,7 @@ public class Updater {
     private final Logger logger = Logger.getLogger(this.getClass().getName());
     private final ProxyRepository proxyRepo;
     private final BlockedProxyRepository blockedRepo;
-    private ExecutorService pool = Executors.newFixedThreadPool(24);
+    private ExecutorService pool = Executors.newFixedThreadPool(16);
 
     @Autowired
     public Updater(ProxyRepository proxyRepo, BlockedProxyRepository blockedRepo) {
