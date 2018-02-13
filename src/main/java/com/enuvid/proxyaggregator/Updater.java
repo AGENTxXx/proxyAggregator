@@ -33,6 +33,11 @@ public class Updater {
 
     @Scheduled(fixedDelay = 1)
     public void update() {
+        updateProxies();
+        updateBlockedProxies();
+    }
+
+    private void updateProxies() {
         for (int i = 0; true; i++) {
             logger.log(Level.INFO, "Check new page");
             Page<Proxy> partOfProxies = proxyRepo.findAll(new PageRequest(i, 100));
