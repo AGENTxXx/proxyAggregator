@@ -24,25 +24,24 @@ public class BlockedStatusUpdater implements Runnable {
     @Override
     public void run() {
         logger.log(Level.INFO, "Check blocked proxy " + blockedProxy.getIp() + ":" + blockedProxy.getIp());
-        try {
-            if (blockedProxy.check())
-                if (blockedProxy.toRestore()) {
-                    Proxy proxy = blockedProxy.restore();
-                    if (proxy != null) {
-                        logger.log(Level.INFO, "Restore proxy " + proxy.getIp() + ":" + proxy.getPort());
-                        proxyRepo.insert(proxy);
+
+        if (blockedProxy.check())
+            if (blockedProxy.toRestore()) {
+                Proxy proxy = blockedProxy.restore();
+                if (proxy != null) {
+                    logger.log(Level.INFO, "Restore proxy " + proxy.getIp() + ":" + proxy.getPort());
+                    proxyRepo.insert(proxy);
 
 //                        blockedRepo.save(blockedProxy);
-                        blockedRepo.delete(blockedProxy);
-                        return;
-                    }
+                    blockedRepo.delete(blockedProxy);
+                    return;
                 }
-            blockedRepo.save(blockedProxy);
-        } catch (Exception ignored) { }
-
+            }
         if (blockedProxy.toDelete()) {
             logger.log(Level.INFO, "Delete blocked proxy " + blockedProxy.getIp() + ":" + blockedProxy.getPort());
             blockedRepo.delete(blockedProxy);
+            return;
         }
+        blockedRepo.save(blockedProxy);
     }
 }
