@@ -33,7 +33,7 @@ public class Updater {
 
     @Scheduled(fixedDelay = 1)
     public void update() {
-        updateProxies();
+//        updateProxies();
         updateBlockedProxies();
     }
 
