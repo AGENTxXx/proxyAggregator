@@ -37,9 +37,11 @@ public class BlockedStatusUpdater implements Runnable {
                         return;
                     }
                 }
-            else
-                if (blockedProxy.toDelete())
+            else if (blockedProxy.toDelete()) {
                     blockedRepo.delete(blockedProxy);
+                    return;
+                }
+
             blockedRepo.save(blockedProxy);
         } catch (Exception ignored) { }
     }
