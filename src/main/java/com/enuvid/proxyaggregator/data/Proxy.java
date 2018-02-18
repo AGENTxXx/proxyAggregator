@@ -19,16 +19,9 @@ public class Proxy {
     private int avgSpeed;
     private int avgAvailable;
     private int numSuccessfulUpdates;
+    private Date lastUpdateDate;
     private ShortLocation location;
     private List<Update> lastUpdates;
-
-    public int getAvgAvailable() {
-        return avgAvailable;
-    }
-
-    public int getAvgSpeed() {
-        return avgSpeed;
-    }
 
     protected Proxy() {
     } // JPA constructor
@@ -48,6 +41,14 @@ public class Proxy {
 
     public Proxy(String ip, int port) throws Exception {
         this(ip, port, ProxyUtils.getType(ip, port));
+    }
+
+    public int getAvgAvailable() {
+        return avgAvailable;
+    }
+
+    public int getAvgSpeed() {
+        return avgSpeed;
     }
 
     public ShortLocation getLocation() {
@@ -108,19 +109,19 @@ public class Proxy {
     }
 
     private void calculateMetrics() {
-            int sum = 0;
+        int sum = 0;
         int count = 0;
-            for (Update update : lastUpdates)
-                if (update.getSpeed() != -1) {
-                    count++;
-                    sum += update.getSpeed();
-                }
+        for (Update update : lastUpdates)
+            if (update.getSpeed() != -1) {
+                count++;
+                sum += update.getSpeed();
+            }
         if (count > 0)
             avgSpeed = sum / count;
         else
             avgSpeed = 99999;
 
-            avgAvailable = Math.round((float) numSuccessfulUpdates / (float) numUpdates * 100);
+        avgAvailable = Math.round((float) numSuccessfulUpdates / (float) numUpdates * 100);
     }
 
     public boolean update() {
@@ -128,8 +129,10 @@ public class Proxy {
         pushNewUpdate(newUpdate);
 
         numUpdates++;
-        if (newUpdate.getSpeed() != -1)
+        if (newUpdate.getSpeed() != -1) {
             numSuccessfulUpdates++;
+            lastUpdateDate = new Date();
+        }
         calculateMetrics();
 
         return newUpdate.getSpeed() != -1;
@@ -146,5 +149,9 @@ public class Proxy {
 
             return true;
         } else return false;
+    }
+
+    public Date getLastUpdateDate() {
+        return lastUpdateDate;
     }
 }

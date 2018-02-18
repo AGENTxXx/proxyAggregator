@@ -25,10 +25,10 @@ import java.util.logging.Logger;
 @Component
 public class ParseSchedule {
     private final Logger logger = Logger.getLogger(ParseSchedule.class.getName());
-    private ExecutorService pool = Executors.newFixedThreadPool(16);
     private final ProxyRepository proxyRepo;
     private final BlockedProxyRepository blockedRepo;
     private final WebDriver driver;
+    private ExecutorService pool = Executors.newFixedThreadPool(16);
 
     @Autowired
     public ParseSchedule(ProxyRepository proxyRepo, BlockedProxyRepository blockedRepo) {

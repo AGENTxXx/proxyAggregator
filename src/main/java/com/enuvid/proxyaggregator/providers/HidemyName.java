@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.logging.Level;
 
 public class HidemyName extends ProxyProvider {
-    @SuppressWarnings("InfiniteLoopStatement")
     @Override
     void parse(WebDriver driver) {
         int pageCounter = 0;

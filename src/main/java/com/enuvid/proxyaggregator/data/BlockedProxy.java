@@ -51,8 +51,7 @@ public class BlockedProxy {
             if (ProxyUtils.checkSpeed(ip, port, type) != -1) {
                 successfulUpdates++;
                 return true;
-            }
-            else
+            } else
                 successfulUpdates = 0;
         } catch (Exception e) {
             successfulUpdates = 0;

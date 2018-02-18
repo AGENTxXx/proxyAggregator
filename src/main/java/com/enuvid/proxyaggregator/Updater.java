@@ -51,7 +51,8 @@ public class Updater {
             try { //Wait until all tasks was be completed
                 for (Future<?> thread : threads)
                     thread.get();
-            } catch (Exception ignored) { }
+            } catch (Exception ignored) {
+            }
 
             if (partOfProxies.isLast())
                 break;
@@ -75,9 +76,10 @@ public class Updater {
             try { //Wait until all task was be completed
                 for (Future<?> thread : threads)
                     thread.get();
-            } catch (Exception ignored) { }
+            } catch (Exception ignored) {
+            }
 
-            if(partOfBlockedProxies.isLast())
+            if (partOfBlockedProxies.isLast())
                 break;
         }
     }

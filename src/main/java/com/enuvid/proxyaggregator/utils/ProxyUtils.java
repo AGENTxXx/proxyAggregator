@@ -1,7 +1,6 @@
 package com.enuvid.proxyaggregator.utils;
 
 import com.enuvid.proxyaggregator.data.Proxy;
-import org.jboss.netty.handler.ipfilter.IpFilteringHandler;
 
 import java.net.InetSocketAddress;
 import java.net.URL;
@@ -51,8 +50,8 @@ public class ProxyUtils {
         for (Proxy proxy : tmp)
             proxyList.removeIf(it ->
                     proxy.getIp().equals(it.getIp()) &&
-                    proxy.getPort() == it.getPort() &&
-                    !proxy.getLastUpdates().equals(it.getLastUpdates())
+                            proxy.getPort() == it.getPort() &&
+                            !proxy.getLastUpdates().equals(it.getLastUpdates())
             );
         return proxyList;
     }
