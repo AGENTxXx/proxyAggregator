@@ -13,6 +13,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
 @RestController
 public class GetProxies {
     private final ProxyRepository proxyRepo;
@@ -43,12 +49,26 @@ public class GetProxies {
         result.addProperty("totalResults", proxies.getTotalElements());
         result.addProperty("currentPage", page);
         result.addProperty("itemsOnPage", proxies.getContent().size());
+        List<SimpleProxy> proxiesList = proxies.getContent();
         result.add("results",
                 new Gson().toJsonTree(proxies.getContent())
         );
+
         result.get("results").getAsJsonArray().forEach(proxy -> {
             long ip = proxy.getAsJsonObject().get("ip").getAsLong();
             proxy.getAsJsonObject().addProperty("ip", IPUtils.convert(ip));
+
+
+            long diff = 0;
+            try {
+                SimpleDateFormat format = new SimpleDateFormat("MMM d, YYYY h:mm:ss aa", Locale.ENGLISH);
+                System.out.println(proxy.getAsJsonObject().get("lastUpdateDate").getAsString());
+                Date updDate = format.parse(proxy.getAsJsonObject().get("lastUpdateDate").getAsString());
+                diff = new Date().getTime() - updDate.getTime();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            proxy.getAsJsonObject().addProperty("lastUpdateDate", diff);
         });
 
         return result.toString();
