@@ -61,7 +61,7 @@ public class GetProxies {
 
             long diff = 0;
             try {
-                SimpleDateFormat format = new SimpleDateFormat("MMM d, YYYY h:mm:ss aa", Locale.ENGLISH);
+                SimpleDateFormat format = new SimpleDateFormat("MMM d, yyyy h:mm:ss aa", Locale.ENGLISH);
                 Date updDate = format.parse(proxy.getAsJsonObject().get("lastUpdateDate").getAsString());
                 diff = new Date().getTime() - updDate.getTime();
             } catch (ParseException e) {
