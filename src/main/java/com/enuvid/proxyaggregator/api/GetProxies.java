@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -38,14 +37,12 @@ public class GetProxies {
             @RequestParam(value = "timeout", defaultValue = "20000") Integer maxSpeed,
             @RequestParam(value = "type", required = false) String protocolType
     ) {
-        long start = System.currentTimeMillis();
         Page<SimpleProxy> proxies = proxyRepo.filter(
                 country,
                 maxAvailable,
                 maxSpeed,
                 new PageRequest(page - 1, limit), protocolType);
 
-        System.out.println("Time: " + (System.currentTimeMillis() - start));
         JsonObject result = new JsonObject();
         result.addProperty("totalResults", proxies.getTotalElements());
         result.addProperty("currentPage", page);
@@ -64,7 +61,7 @@ public class GetProxies {
                 SimpleDateFormat format = new SimpleDateFormat("MMM d, yyyy h:mm:ss aa", Locale.ENGLISH);
                 Date updDate = format.parse(proxy.getAsJsonObject().get("lastUpdateDate").getAsString());
                 diff = new Date().getTime() - updDate.getTime();
-            } catch (ParseException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             proxy.getAsJsonObject().addProperty("lastUpdateDate", diff);

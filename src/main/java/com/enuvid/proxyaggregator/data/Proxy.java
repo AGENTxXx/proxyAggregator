@@ -33,6 +33,7 @@ public class Proxy {
         this.numSuccessfulUpdates = 1;
         this.numUpdates = 1;
 
+        this.lastUpdateDate = new Date();
         this.lastUpdates = new ArrayList<>();
         this.lastUpdates.add(new Update(ip, port, type));
 
