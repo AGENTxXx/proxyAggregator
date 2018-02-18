@@ -12,13 +12,21 @@ public interface ProxyRepository extends MongoRepository<Proxy, String> {
         return existsByIpAndPort(IPUtils.convert(ip), port);
     }
 
-    Page<SimpleProxy> findByLocationCountryContainingIgnoreCaseAndAvgAvailableAfterAndAvgSpeedBeforeOrderByLastUpdateDateDesc(String country, int avgAvailableAfter, int avgSpeedBefore, Pageable page);
+    Page<SimpleProxy> findByLocationCountryContainingIgnoreCaseAndAvgAvailableGreaterThanEqualAndAvgSpeedLessThanEqualOrderByLastUpdateDateDesc(String country, int avgAvailableAfter, int avgSpeedBefore, Pageable page);
+
+    Page<SimpleProxy> findByLocationCountryContainingIgnoreCaseAndAvgAvailableGreaterThanEqualAndAvgSpeedLessThanEqualAndTypeOrderByLastUpdateDateDesc(String country, int avgAvailableAfter, int avgSpeedBefore, Pageable page, java.net.Proxy.Type type);
 
     default Page<SimpleProxy> filter(
             String country,
             int minAvailable,
             int maxSpeed
-            , Pageable page) {
-        return findByLocationCountryContainingIgnoreCaseAndAvgAvailableAfterAndAvgSpeedBeforeOrderByLastUpdateDateDesc(country, minAvailable, maxSpeed, page);
+            , Pageable page, String typeStr) {
+        if (typeStr == null || typeStr.equals("all"))
+            return findByLocationCountryContainingIgnoreCaseAndAvgAvailableGreaterThanEqualAndAvgSpeedLessThanEqualOrderByLastUpdateDateDesc(country, minAvailable, maxSpeed, page);
+        else {
+            if (typeStr.equals("none") || typeStr.equals(""))
+                typeStr = "DIRECT";
+            return findByLocationCountryContainingIgnoreCaseAndAvgAvailableGreaterThanEqualAndAvgSpeedLessThanEqualAndTypeOrderByLastUpdateDateDesc(country, minAvailable, maxSpeed, page, java.net.Proxy.Type.valueOf(typeStr.toUpperCase()));
+        }
     }
 }

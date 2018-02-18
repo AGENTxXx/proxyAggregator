@@ -35,15 +35,16 @@ public class GetProxies {
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "country", defaultValue = "") String country,
             @RequestParam(value = "available", defaultValue = "0") Integer maxAvailable,
-            @RequestParam(value = "timeout", defaultValue = "20000") Integer maxSpeed
+            @RequestParam(value = "timeout", defaultValue = "20000") Integer maxSpeed,
+            @RequestParam(value = "type", required = false) String protocolType
     ) {
         long start = System.currentTimeMillis();
         Page<SimpleProxy> proxies = proxyRepo.filter(
                 country,
                 maxAvailable,
                 maxSpeed,
-                new PageRequest(page - 1, limit)
-        );
+                new PageRequest(page - 1, limit), protocolType);
+
         System.out.println("Time: " + (System.currentTimeMillis() - start));
         JsonObject result = new JsonObject();
         result.addProperty("totalResults", proxies.getTotalElements());
@@ -57,7 +58,6 @@ public class GetProxies {
         result.get("results").getAsJsonArray().forEach(proxy -> {
             long ip = proxy.getAsJsonObject().get("ip").getAsLong();
             proxy.getAsJsonObject().addProperty("ip", IPUtils.convert(ip));
-
 
             long diff = 0;
             try {
