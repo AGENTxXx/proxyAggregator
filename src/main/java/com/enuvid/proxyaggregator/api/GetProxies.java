@@ -47,15 +47,17 @@ public class GetProxies {
         result.addProperty("totalResults", proxies.getTotalElements());
         result.addProperty("currentPage", page);
         result.addProperty("itemsOnPage", proxies.getContent().size());
-        List<SimpleProxy> proxiesList = proxies.getContent();
         result.add("results",
                 new Gson().toJsonTree(proxies.getContent())
         );
 
+
         result.get("results").getAsJsonArray().forEach(proxy -> {
+            //Change ip format(Long -> String)
             long ip = proxy.getAsJsonObject().get("ip").getAsLong();
             proxy.getAsJsonObject().addProperty("ip", IPUtils.convert(ip));
 
+            //Change field with last update date to difference between current and update date(in milliseconds)
             long diff = 0;
             try {
                 SimpleDateFormat format = new SimpleDateFormat("MMM d, yyyy h:mm:ss aa", Locale.ENGLISH);

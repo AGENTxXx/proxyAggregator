@@ -28,7 +28,7 @@ public class HidemyName extends ProxyProvider {
         }
     }
 
-    private List<InetSocketAddress> parsePage(WebDriver driver, int startPoint) throws Exception {
+    private List<InetSocketAddress> parsePage(WebDriver driver, int startPoint) throws Exception  {
         String baseURL = "https://hidemy.name/ru/proxy-list/?start=";
         driver.get(baseURL + startPoint);
         Thread.sleep(8000);
