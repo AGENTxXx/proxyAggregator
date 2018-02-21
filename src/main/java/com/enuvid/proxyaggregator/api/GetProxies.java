@@ -33,7 +33,7 @@ public class GetProxies {
             @RequestParam(value = "limit", defaultValue = "50") int limit,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "country", defaultValue = "") String country,
-            @RequestParam(value = "available", defaultValue = "0") Integer maxAvailable,
+            @RequestParam(value = "available", defaultValue = "1") Integer maxAvailable,
             @RequestParam(value = "timeout", defaultValue = "20000") Integer maxSpeed,
             @RequestParam(value = "type", required = false) String protocolType
     ) {
