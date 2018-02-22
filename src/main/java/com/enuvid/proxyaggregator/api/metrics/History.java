@@ -3,6 +3,7 @@ package com.enuvid.proxyaggregator.api.metrics;
 import org.mapdb.BTreeMap;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,16 +12,19 @@ import java.util.TreeMap;
 
 @RestController
 public class History {
+    @CrossOrigin
     @GetMapping("/metrics/hourlyAmount")
     TreeMap proxyHourlyAmount() {
         return getTreeMapByCollectionName("proxyHourlyCounter");
     }
 
+    @CrossOrigin
     @GetMapping("/metrics/blockedHourlyAmount")
     TreeMap blockedHourlyAmount() {
         return getTreeMapByCollectionName("blockedHourlyCounter");
     }
 
+    @CrossOrigin
     @GetMapping("/metrics/dailyAmount")
     TreeMap proxyDailyAmount() {
         return getTreeMapByCollectionName("proxyDailyCounter");
