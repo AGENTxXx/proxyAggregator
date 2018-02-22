@@ -12,6 +12,7 @@ import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -40,7 +41,7 @@ public class ParseSchedule {
         driver = new PhantomJSDriver(caps);
     }
 
-    //    @Scheduled(fixedDelay = 1)
+    @Scheduled(fixedDelay = 1)
     void parseNewProxies() {
         List<ProxyProvider> providers = Arrays.asList(
                 new HidemyName().setThreadPool(pool)

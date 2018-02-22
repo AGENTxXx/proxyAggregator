@@ -7,6 +7,7 @@ import com.enuvid.proxyaggregator.data.ProxyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class UpdaterSchedule {
         this.blockedRepo = blockedRepo;
     }
 
-    //    @Scheduled(fixedDelay = 1)
+    @Scheduled(fixedDelay = 1)
     public void update() {
         updateProxies();
         updateBlockedProxies();
