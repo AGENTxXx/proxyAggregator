@@ -1,6 +1,6 @@
 package com.enuvid.proxyaggregator.api.metrics;
 
-import com.enuvid.proxyaggregator.data.aggregations.ProxyCities;
+import com.enuvid.proxyaggregator.data.aggregations.ProxyCountries;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -24,17 +24,16 @@ public class Location {
     }
 
     @CrossOrigin
-    @GetMapping("/metrics/cities")
-    List<ProxyCities> regions() {
+    @GetMapping("/metrics/countries")
+    List<ProxyCountries> regions() {
         GroupOperation groupByCities = Aggregation
-                .group("location.city")
+                .group("location.country")
                 .count()
-                .as("value")
-                .first("location.country").as("country");
+                .as("value");
         SortOperation sortByASC = Aggregation.sort(new Sort(Sort.Direction.DESC, "value"));
 
         Aggregation agr = Aggregation.newAggregation(groupByCities, sortByASC);
-        AggregationResults<ProxyCities> cities = mongoTemplate.aggregate(agr, "proxy", ProxyCities.class);
+        AggregationResults<ProxyCountries> cities = mongoTemplate.aggregate(agr, "proxy", ProxyCountries.class);
         return cities.getMappedResults();
     }
 }
