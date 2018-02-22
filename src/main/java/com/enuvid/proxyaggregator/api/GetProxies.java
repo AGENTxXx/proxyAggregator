@@ -33,7 +33,7 @@ public class GetProxies {
             @RequestParam(value = "limit", defaultValue = "50") int limit,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "country", defaultValue = "") String country,
-            @RequestParam(value = "available", defaultValue = "0") Integer maxAvailable,
+            @RequestParam(value = "available", defaultValue = "1") Integer maxAvailable,
             @RequestParam(value = "timeout", defaultValue = "20000") Integer maxSpeed,
             @RequestParam(value = "type", required = false) String protocolType
     ) {
@@ -47,15 +47,17 @@ public class GetProxies {
         result.addProperty("totalResults", proxies.getTotalElements());
         result.addProperty("currentPage", page);
         result.addProperty("itemsOnPage", proxies.getContent().size());
-        List<SimpleProxy> proxiesList = proxies.getContent();
         result.add("results",
                 new Gson().toJsonTree(proxies.getContent())
         );
 
+
         result.get("results").getAsJsonArray().forEach(proxy -> {
+            //Change ip format(Long -> String)
             long ip = proxy.getAsJsonObject().get("ip").getAsLong();
             proxy.getAsJsonObject().addProperty("ip", IPUtils.convert(ip));
 
+            //Change field with last update date to difference between current and update date(in milliseconds)
             long diff = 0;
             try {
                 SimpleDateFormat format = new SimpleDateFormat("MMM d, yyyy h:mm:ss aa", Locale.ENGLISH);
