@@ -13,6 +13,9 @@ public class SimpleProxy {
 
     private ShortLocation location;
 
+    public SimpleProxy() {
+    }
+
     public long getIp() {
         return ip;
     }
@@ -39,8 +42,5 @@ public class SimpleProxy {
 
     public ShortLocation getLocation() {
         return location;
-    }
-
-    public SimpleProxy() {
     }
 }

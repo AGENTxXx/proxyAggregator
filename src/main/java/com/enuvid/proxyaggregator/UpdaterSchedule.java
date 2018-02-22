@@ -7,7 +7,6 @@ import com.enuvid.proxyaggregator.data.ProxyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -19,19 +18,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Component
-public class Updater {
+public class UpdaterSchedule {
     private final Logger logger = Logger.getLogger(this.getClass().getName());
     private final ProxyRepository proxyRepo;
     private final BlockedProxyRepository blockedRepo;
     private ExecutorService pool = Executors.newFixedThreadPool(24);
 
     @Autowired
-    public Updater(ProxyRepository proxyRepo, BlockedProxyRepository blockedRepo) {
+    public UpdaterSchedule(ProxyRepository proxyRepo, BlockedProxyRepository blockedRepo) {
         this.proxyRepo = proxyRepo;
         this.blockedRepo = blockedRepo;
     }
 
-    @Scheduled(fixedDelay = 1)
+    //    @Scheduled(fixedDelay = 1)
     public void update() {
         updateProxies();
         updateBlockedProxies();
