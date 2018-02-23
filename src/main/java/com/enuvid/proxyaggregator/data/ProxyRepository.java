@@ -16,6 +16,8 @@ public interface ProxyRepository extends MongoRepository<Proxy, String> {
 
     Page<SimpleProxy> findByLocationCountryContainingIgnoreCaseAndAvgAvailableGreaterThanEqualAndAvgSpeedLessThanEqualAndTypeOrderByLastUpdateDateDesc(String country, int avgAvailableAfter, int avgSpeedBefore, Pageable page, java.net.Proxy.Type type);
 
+    int countByType(java.net.Proxy.Type type);
+
     default Page<SimpleProxy> filter(
             String country,
             int minAvailable,
@@ -28,5 +30,9 @@ public interface ProxyRepository extends MongoRepository<Proxy, String> {
                 typeStr = "DIRECT";
             return findByLocationCountryContainingIgnoreCaseAndAvgAvailableGreaterThanEqualAndAvgSpeedLessThanEqualAndTypeOrderByLastUpdateDateDesc(country, minAvailable, maxSpeed, page, java.net.Proxy.Type.valueOf(typeStr.toUpperCase()));
         }
+    }
+
+    default int getHttpProxiesAmount() {
+        return countByType(java.net.Proxy.Type.HTTP);
     }
 }
