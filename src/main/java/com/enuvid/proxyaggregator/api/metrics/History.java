@@ -1,8 +1,10 @@
 package com.enuvid.proxyaggregator.api.metrics;
 
+import com.enuvid.proxyaggregator.data.ProxyRepository;
 import org.mapdb.BTreeMap;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +14,13 @@ import java.util.TreeMap;
 
 @RestController
 public class History {
+    private final ProxyRepository proxyRepo;
+
+    @Autowired
+    public History(ProxyRepository proxyRepo) {
+        this.proxyRepo = proxyRepo;
+    }
+
     @CrossOrigin
     @GetMapping("/metrics/hourlyAmount")
     TreeMap proxyHourlyAmount() {
@@ -39,6 +48,7 @@ public class History {
         //noinspection unchecked
         map.forEach((k, v) -> result.put((Date) k, (Integer) v));
         db.close();
+        result.put(new Date(), (int) proxyRepo.count());
         return result;
     }
 }
