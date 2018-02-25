@@ -33,10 +33,10 @@ public class HistorySchedule {
         logger.log(Level.INFO, "Add new records to 'hourlyMetrics'");
 
         DB db = DBMaker.fileDB("history.db").make();
-        BTreeMap proxiesDailyCounter = db.treeMap("proxyHourlyCounter").createOrOpen();
-        BTreeMap blockedDailyCounter = db.treeMap("blockedHourlyCounter").createOrOpen();
-        addRecord(proxiesDailyCounter, (int) proxyRepo.count(), 24);
-        addRecord(blockedDailyCounter, (int) blockedRepo.count(), 24);
+        BTreeMap proxiesHourlyCounter = db.treeMap("proxyHourlyCounter").createOrOpen();
+        BTreeMap blockedHourlyCounter = db.treeMap("blockedHourlyCounter").createOrOpen();
+        addRecord(proxiesHourlyCounter, (int) proxyRepo.count(), 24);
+        addRecord(blockedHourlyCounter, (int) blockedRepo.count(), 24);
         db.close();
     }
 
@@ -47,9 +47,10 @@ public class HistorySchedule {
     void addNextDailyValue() {
         logger.log(Level.INFO, "Add new records to 'dailyMetrics'");
 
-        BTreeMap proxiesHourlyCounter = DBMaker.fileDB("history.db")
-                .make().treeMap("proxyDailyCounter").createOrOpen();
-        addRecord(proxiesHourlyCounter, (int) proxyRepo.count(), 30);
+        DB db = DBMaker.fileDB("history.db").make();
+        BTreeMap proxiesDailyCounter = db.treeMap("proxyDailyCounter").createOrOpen();
+        addRecord(proxiesDailyCounter, (int) proxyRepo.count(), 30);
+        db.close();
     }
 
     private void addRecord(BTreeMap map, int pushValue, int maxRecords) {
