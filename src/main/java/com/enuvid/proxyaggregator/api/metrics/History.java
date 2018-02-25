@@ -1,5 +1,6 @@
 package com.enuvid.proxyaggregator.api.metrics;
 
+import com.enuvid.proxyaggregator.data.BlockedProxyRepository;
 import com.enuvid.proxyaggregator.data.ProxyRepository;
 import org.mapdb.BTreeMap;
 import org.mapdb.DB;
@@ -15,32 +16,34 @@ import java.util.TreeMap;
 @RestController
 public class History {
     private final ProxyRepository proxyRepo;
+    private final BlockedProxyRepository blockedRepo;
     private volatile boolean fileBlocked = false;
 
     @Autowired
-    public History(ProxyRepository proxyRepo) {
+    public History(ProxyRepository proxyRepo, BlockedProxyRepository blockedRepo) {
         this.proxyRepo = proxyRepo;
+        this.blockedRepo = blockedRepo;
     }
 
     @CrossOrigin
     @GetMapping("/metrics/hourlyAmount")
     TreeMap proxyHourlyAmount() {
-        return getTreeMapByCollectionName("proxyHourlyCounter");
+        return getTreeMapByCollectionName("proxyHourlyCounter", (int) proxyRepo.count());
     }
 
     @CrossOrigin
     @GetMapping("/metrics/blockedHourlyAmount")
     TreeMap blockedHourlyAmount() {
-        return getTreeMapByCollectionName("blockedHourlyCounter");
+        return getTreeMapByCollectionName("blockedHourlyCounter", (int) blockedRepo.count());
     }
 
     @CrossOrigin
     @GetMapping("/metrics/dailyAmount")
     TreeMap proxyDailyAmount() {
-        return getTreeMapByCollectionName("proxyDailyCounter");
+        return getTreeMapByCollectionName("proxyDailyCounter", (int) proxyRepo.count());
     }
 
-    private TreeMap<Date, Integer> getTreeMapByCollectionName(String name) {
+    private TreeMap<Date, Integer> getTreeMapByCollectionName(String name, int currentTime) {
         while (true) {
             if (!(fileBlocked)) break;
         }
@@ -55,7 +58,7 @@ public class History {
         db.close();
         fileBlocked = false;
 
-        result.put(new Date(), (int) proxyRepo.count());
+        result.put(new Date(), currentTime);
         return result;
     }
 }
