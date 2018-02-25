@@ -18,7 +18,7 @@ public class HistorySchedule {
     private final ProxyRepository proxyRepo; //Data repos
     private final BlockedProxyRepository blockedRepo;
     private Logger logger = Logger.getLogger(this.getClass().getName()); //Logger for current classname
-    private volatile boolean fileBlcoked = false;
+    private volatile boolean fileBlocked = false;
 
     @Autowired
     public HistorySchedule(ProxyRepository proxyRepo, BlockedProxyRepository blockedRepo) {
@@ -27,15 +27,15 @@ public class HistorySchedule {
     }
 
     @Scheduled(
-            fixedRate = 1000 * 60 * 60,  //1 hour
-            initialDelay = 1000 * 60 * 60
+            fixedRate = 1000 * 10,  //1 hour
+            initialDelay = 1000
     )
     void addNextHourlyValue() {
-        logger.log(Level.INFO, "Add new records to 'hourlyMetrics'");
         while (true) {
-            if (!(fileBlcoked)) break;
+            if (!(fileBlocked)) break;
         }
-        fileBlcoked = true;
+        fileBlocked = true;
+        logger.log(Level.INFO, "Add new records to 'hourlyMetrics'");
 
         DB db = DBMaker.fileDB("history.db").make();
         BTreeMap proxiesHourlyCounter = db.treeMap("proxyHourlyCounter").createOrOpen();
@@ -43,26 +43,26 @@ public class HistorySchedule {
         addRecord(proxiesHourlyCounter, (int) proxyRepo.count(), 24);
         addRecord(blockedHourlyCounter, (int) blockedRepo.count(), 24);
         db.close();
-        fileBlcoked = false;
+        fileBlocked = false;
     }
 
     @Scheduled(
-            fixedRate = 1000 * 60 * 60 * 24,  //24 hour
-            initialDelay = 1000 * 60 * 60 * 24
+            fixedRate = 1000 * 10,  //24 hour
+            initialDelay = 1000
     )
     void addNextDailyValue() {
-        logger.log(Level.INFO, "Add new records to 'dailyMetrics'");
         while (true) {
-            if (!(fileBlcoked)) break;
+            if (!(fileBlocked)) break;
         }
-        fileBlcoked = true;
+        fileBlocked = true;
+        logger.log(Level.INFO, "Add new records to 'dailyMetrics'");
 
         DB db = DBMaker.fileDB("history.db").make();
         BTreeMap proxiesDailyCounter = db.treeMap("proxyDailyCounter").createOrOpen();
         addRecord(proxiesDailyCounter, (int) proxyRepo.count(), 30);
         db.close();
 
-        fileBlcoked = false;
+        fileBlocked = false;
     }
 
     private void addRecord(BTreeMap map, int pushValue, int maxRecords) {
