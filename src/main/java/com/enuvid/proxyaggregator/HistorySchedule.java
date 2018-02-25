@@ -27,8 +27,8 @@ public class HistorySchedule {
     }
 
     @Scheduled(
-            fixedRate = 1000 * 10,  //1 hour
-            initialDelay = 1000
+            fixedRate = 1000 * 60 * 60,  //1 hour
+            initialDelay = 1000 * 60 * 60
     )
     void addNextHourlyValue() {
         while (true) {
@@ -47,8 +47,8 @@ public class HistorySchedule {
     }
 
     @Scheduled(
-            fixedRate = 1000 * 10,  //24 hour
-            initialDelay = 1000
+            fixedRate = 1000 * 60 * 60 * 24,  //24 hour
+            initialDelay = 1000 * 60 * 60 * 24
     )
     void addNextDailyValue() {
         while (true) {

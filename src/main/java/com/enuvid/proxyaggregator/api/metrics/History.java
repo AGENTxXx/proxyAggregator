@@ -15,6 +15,7 @@ import java.util.TreeMap;
 @RestController
 public class History {
     private final ProxyRepository proxyRepo;
+    private volatile boolean fileBlocked = false;
 
     @Autowired
     public History(ProxyRepository proxyRepo) {
@@ -40,6 +41,10 @@ public class History {
     }
 
     private TreeMap<Date, Integer> getTreeMapByCollectionName(String name) {
+        while (true) {
+            if (!(fileBlocked)) break;
+        }
+        fileBlocked = true;
         DB db = DBMaker
                 .fileDB("history.db")
                 .make();
@@ -48,6 +53,8 @@ public class History {
         //noinspection unchecked
         map.forEach((k, v) -> result.put((Date) k, (Integer) v));
         db.close();
+        fileBlocked = false;
+
         result.put(new Date(), (int) proxyRepo.count());
         return result;
     }
